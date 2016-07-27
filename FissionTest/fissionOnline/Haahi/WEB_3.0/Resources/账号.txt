@@ -1,15 +1,16 @@
-*** Settings ***
+﻿*** Settings ***
 Library           Selenium2Library
 
 *** Variables ***
-${SVIP账号}         bily003@test.com
-${SVIP用户ID}       372
-${普通账号昵称}         hello kitty
-${密码}             111111
-${普通账号}           bily001@test.com
-${普通账号用户ID}       124
-${普通账号昵称}         bily002
-${主播账号}           bily@test.com
-${主播密码}           111111
-${主播昵称}           bily
-${修改密码账号}         bily001@126.com
+#需要时候补全
+${SVIP账号}         
+${SVIP用户ID}       
+${普通账号昵称}        
+${密码}             
+${普通账号}           
+${普通账号用户ID}       
+${普通账号昵称}        
+${主播账号}          
+${主播密码}           
+${主播昵称}           
+${修改密码账号}        

@@ -1,4 +1,4 @@
-*** Settings ***
+﻿*** Settings ***
 Library           Collections
 Library           String
 Library           RequestsLibrary
@@ -8,8 +8,7 @@ Library           json
 *** Variables ***
 ${Content-Type}    application/json
 ${URL}            http://www.7nujoom.com
-${用户名}            blue2@126.com
-${密码}             111111
+
 ${AppURL}         http://www.7nujoom.com/mobile
 ${birthday}       1977-7-7
 ${sex}            1
@@ -17,14 +16,9 @@ ${nikeName}       hello 7
 ${roomId}         967    # 房间号，dy@126.com与浏览器后面显示的数字不是同一个，查看源文件可找到
 ${pageNo}         1    # 页码
 ${pageSize}       10    # 显示数量
-${facebook账号}     105284116@qq.com
-${twitter账号}      105284116@qq.com
-${google账号}       zhao8606@gmail.com
-${facebook密码}     yuzhu521lc
-${twitter密码}      yuzhu521lc
-${googler密码}      yuzhu521lc
-${主播账号}           dy@126.com
-${主播密码}           111111
+
+${主播账号}           
+${主播密码}           
 ${surfing靓号}      1611909
 
 *** Keywords ***

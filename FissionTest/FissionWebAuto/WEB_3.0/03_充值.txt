@@ -1,4 +1,4 @@
-*** Settings ***
+﻿*** Settings ***
 Library           Selenium2Library
 Library           Collections
 Library           String
@@ -23,7 +23,7 @@ Resource          Resources/首页.txt
     #click element    //div[contains(concat(' ', @class, ' '), ' recharge_confirm ')]    #金额
     Find and Click Element    //div[contains(concat(' ', @class, ' '), ' confirm_banner ')]//p    #confirm order
     Find and Click Element    //*[@id="bb4ed31b-525a-5b2a-5858-b3f0a5b9f6a0"]/div[1]/div
-    input text    //*[@id="PhoneNumberTxtBx"]    971500000000
+    input text    //*[@id="PhoneNumberTxtBx"]    #避免泄密而屏蔽
     click button    NextBtn
     input text    PinTxtBx    000000
     click button    EnterPinBtn
