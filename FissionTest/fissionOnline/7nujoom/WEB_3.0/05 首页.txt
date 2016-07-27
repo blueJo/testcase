@@ -1,0 +1,79 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          Resources/个人信息keywords.txt
+Resource          Resources/账号.txt
+Resource          Resources/首页.txt
+
+*** Test Cases ***
+首页登录
+    [Tags]    h
+    [Setup]
+    [Template]
+    [Timeout]
+    Open Browser    ${BASE URL}    gc
+    Maximize Browser Window
+    Click Link    ${登录}
+    Input text    ${输入账号}    ${普通账号}
+    Input password    ${输入密码}    ${密码}
+    click button    ${提交登录}
+    sleep    3
+    click element    ${个人名片}
+    Element should contain    ${ID}    ${普通账号用户ID}
+    [Teardown]    Close Browser
+
+签到？？
+    [Setup]    Normal User Login
+    Capture Page Screenshot
+    Double Click Element    ${签到}
+    Capture Page Screenshot
+    #select window    daily_sign
+    [Teardown]    Close Browser
+
+进入直播间
+    [Tags]    h
+    [Setup]    Normal User Login
+    Double Click Element    ${第一个直播间}
+    Select Window
+    sleep    3
+    [Teardown]    Close Browser
+
+直播
+    [Tags]    h
+    [Setup]    Normal User 直播间Login    ${主播账号}    ${主播密码}
+    #click element    ${个人名片}
+    #Double Click Element    ${直播}
+    Click Element    nav_self_living
+    [Teardown]    close browser
+
+首页登录--签到入口
+    [Tags]    h
+    [Setup]
+    [Template]
+    [Timeout]
+    Open Browser    ${BASE URL}    gc
+    Maximize Browser Window
+    Click Link    ${登录}
+    Input text    ${输入账号}    ${普通账号}
+    Input password    ${输入密码}    ${密码}
+    click button    ${提交登录}
+    sleep    3
+    click element    ${个人名片}
+    Element should contain    ${ID}    ${普通账号用户ID}
+    [Teardown]    Close Browser
+
+首页登录--消息入口
+    [Tags]    h
+    [Setup]
+    [Template]
+    [Timeout]
+    Open Browser    ${BASE URL}    gc
+    Maximize Browser Window
+    Click Link    ${通知入口}
+    switch window by url    ${通知页}
+    Input text    ${输入账号}    ${普通账号}
+    Input password    ${输入密码}    ${密码}
+    click button    ${提交登录}
+    sleep    3
+    #click element    ${个人名片}
+    Element should contain    nick_id    ${普通账号用户ID}
+    [Teardown]    Close Browser

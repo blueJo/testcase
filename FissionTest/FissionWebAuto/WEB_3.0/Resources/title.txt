@@ -1,0 +1,9 @@
+*** Variables ***
+${7nujoom}        7nujoom
+${Following}      Following
+${个人信息页}          http://new.7najm.com:9999/myinfo.shtml
+${关注主播列表页}        http://new.7najm.com:9999/myFavorite.shtml
+${通知页}            http://new.7najm.com:9999/mymessage.shtml
+${充值历史页}          http://new.7najm.com:9999/myrechargerecord.shtml
+${商城消费历史页}        http://new.7najm.com:9999/mystorerecord.shtml
+${充值页}            http://new.7najm.com:9999/myrecharge.shtml

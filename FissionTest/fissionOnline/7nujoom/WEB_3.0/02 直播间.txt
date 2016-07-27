@@ -1,0 +1,173 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Collections
+Library           String
+Library           OperatingSystem
+Resource          Resources/直播间keywords.txt
+Resource          Resources/个人信息keywords.txt
+Resource          globals/constants.robot
+Resource          Resources/账号.txt
+Resource          Resources/首页.txt
+
+*** Test Cases ***
+直播间发言
+    [Tags]    room
+    [Setup]    Normal User 直播间Login    ${普通账号}    ${密码}
+    [Template]
+    #Select Window    ${7nujoom}
+    sleep    3
+    Input text    ${消息输入框}    ${消息内容}
+    click button    ${send}
+    sleep    3
+    Element Should Contain    ${消息显示区}    ${消息内容}
+    [Teardown]    Close Browser
+
+直播间表情
+    [Tags]    room
+    [Setup]    Normal User 直播间Login    ${SVIP账号}    ${密码}
+    Select Window    7nujoom
+    sleep    5
+    Click Element    ${表情入口}
+    Click Element    ${微笑表情}
+    click button    ${send}
+    sleep    3
+    Element Should Contain    ${消息显示区}    ${修改后的昵称}
+    [Teardown]    Close Browser
+
+直播间发送解锁表情
+    [Tags]    room
+    [Setup]    Normal User 直播间Login    ${SVIP账号}    ${密码}
+    Select Window    7nujoom
+    sleep    5
+    Click Element    ${表情入口}
+    Click Element    ${解锁表情}
+    Click Element    ${解锁表情hi}
+    sleep    3
+    Element Should Contain    ${消息显示区}    ${修改后的昵称}
+    [Teardown]    Close Browser
+
+直播间发送会员表情
+    [Tags]    room
+    [Setup]    Normal User 直播间Login    ${SVIP账号}    ${密码}
+    Select Window    7nujoom
+    sleep    5
+    Click Element    ${表情入口}
+    Click Element    ${会员表情入口}
+    sleep    2
+    double Click Element    ${会员表情money}
+    sleep    3
+    Element Should Contain    ${消息显示区}    ${修改后的昵称}
+    [Teardown]    Close Browser
+
+直播间送礼
+    [Tags]    room
+    [Setup]    Normal User 直播间Login    ${SVIP账号}    ${密码}
+    Select Window    7nujoom
+    sleep    5
+    Click Element    ${选择的礼物}
+    mouse over    ${发送礼物}    #//*[@id="roomGift"]/div/div[3]
+    click button    ${发送礼物}
+    sleep    3
+    Element Should Contain    ${礼物展示区}    ${修改后的昵称}
+    #Element Should Contain    //div[contains(concat(' ', @class, ' '), ' gift_show ')]    HeartofAngel
+    [Teardown]    Close Browser
+
+直播间关注
+    [Tags]    room
+    [Setup]    Normal User 直播间Login    ${普通账号}    ${密码}
+    sleep    3
+    click element    ${关注}
+    click link    ${直播间_MyFollowed}
+    Switch Window by url    ${关注主播列表页}
+    page should contain    ${主播昵称}
+    [Teardown]    Close Browser
+
+直播间取消关注
+    [Tags]    room
+    [Setup]    Normal User 直播间Login    ${普通账号}    ${密码}
+    sleep    3
+    click element    ${关注}
+    click link    ${直播间_MyFollowed}
+    Switch Window by url    ${关注主播列表页}
+    page should not contain    ${主播昵称}
+    [Teardown]    Close Browser
+
+直播间分享？
+    [Tags]    room
+    [Setup]    Normal User 直播间Login    ${普通账号}    ${密码}
+    Select Window    7nujoom
+    sleep    3
+    click element    ${分享}
+    click element    ${tw}
+    [Teardown]    Close Browser
+
+禁言
+    [Documentation]    如果人员众多，不能确保禁言的就是指定的用户
+    [Tags]    room
+    [Setup]
+    Normal User 直播间Login_火狐    ${普通账号}    ${密码}
+    #发言
+    #Element Should Contain    ${消息显示区}    ${消息内容}
+    Normal User 直播间Login    ${主播账号}    ${主播密码}
+    click element    ${直播间在线列表}
+    find and click element    ${直播间在线列表第二名}
+    Click Element    ${禁言ban}
+    Normal User 直播间Login    ${普通账号}    ${密码}
+    发言
+    sleep    3
+    Element Should Contain    ${消息显示区}    منع المحادثة
+    [Teardown]    close all browsers
+
+移出直播间
+    [Tags]    room
+    [Setup]
+    Normal User 直播间Login_火狐    ${普通账号}    ${密码}
+    #发言
+    #Element Should Contain    ${消息显示区}    ${消息内容}
+    Normal User 直播间Login    ${主播账号}    ${主播密码}
+    click element    ${直播间在线列表}
+    find and click element    ${直播间在线列表第二名}
+    Click Element    ${移出remove}
+    Element Should Not Be Visible    ${普通账户昵称}
+    Normal User 直播间Login    ${普通账号}    ${密码}
+    发言
+    Element Should Contain    ${消息显示区}    النظام مشغول ، برجاء إعادة المحاولة
+    [Teardown]    close all browsers
+
+直播间VIP礼物
+    [Tags]    room
+    [Setup]    Normal User 直播间Login    ${SVIP账号}    ${密码}
+    Select Window    7nujoom
+    sleep    5
+    Click Element    ${VIP礼物入口}
+    Click Element    ${选择VIP礼物}
+    mouse over    ${发送礼物}    #//*[@id="roomGift"]/div/div[3]
+    click button    ${发送礼物}
+    sleep    3
+    Element Should Contain    ${礼物展示区}    ${修改后的昵称}
+    #Element Should Contain    //div[contains(concat(' ', @class, ' '), ' gift_show ')]    HeartofAngel
+    [Teardown]    Close Browser
+
+直播间背包礼物
+    [Tags]    room
+    [Setup]    Normal User 直播间Login    ${SVIP账号}    ${密码}
+    Select Window    7nujoom
+    sleep    5
+    Click Element    ${背包礼物入口}
+    Click Element    ${背包礼物}
+    mouse over    ${发送礼物}    #//*[@id="roomGift"]/div/div[3]
+    click button    ${发送礼物}
+    sleep    3
+    Element Should Contain    ${礼物展示区}    ${修改后的昵称}
+    #Element Should Contain    //div[contains(concat(' ', @class, ' '), ' gift_show ')]    HeartofAngel
+    [Teardown]    Close Browser
+
+直播间送花
+    [Tags]    room
+    [Setup]    Normal User 直播间Login    ${SVIP账号}    ${密码}
+    [Template]
+    sleep    5
+    double click element    ${送花}    #${消息内容}
+    sleep    3
+    Element Should Contain    ${消息显示区}    ${修改后的昵称}
+    [Teardown]    Close Browser

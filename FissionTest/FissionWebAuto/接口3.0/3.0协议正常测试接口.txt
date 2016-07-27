@@ -1,0 +1,154 @@
+*** Settings ***
+Library           WebSocketLibrary
+Library           RequestsLibrary
+Resource          Resources/keywords.txt
+
+*** Test Cases ***
+04 签到
+    [Tags]    T
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Post Request    7nujooom    /service/user/v3/sign
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    log    ${resp.text}
+
+05 获取签到信息
+    [Tags]    T
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/user/v3/sign
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    Dictionary Should Contain Key    ${resp.json()}    code
+    Dictionary Should Contain Value    ${resp.json()}    0
+    Should Contain    ${resp.text}    "isSign":true
+    log    ${resp.text}
+
+05 已签到
+    [Tags]    T
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Post Request    7nujooom    /service/user/v3/sign
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":1
+    ${resp2}=    Get Request    7nujooom    /service/user/v3/sign
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp2.text}    "code":0
+    log    ${resp.text}
+    log    ${resp2.text}
+
+查看首页
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login
+    #${data}=    Create Dictionary    no=${pageNo}    size=${pageSize}    startTime=2016-5-22    endTime=2016-5-30
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/room/v3/index    #data=${data}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+获取房间用户属性
+    [Tags]    T
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/user/v3/property
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Dictionary Should Contain Key    ${resp.json()}    code
+    Dictionary Should Contain Value    ${resp.json()}    0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+分页获取消费记录
+    [Tags]    T
+    ${headers}=    Set headers login
+    ${params}=    Create Dictionary    no=${pageNo}    size=${pageSize}    start=2016-01-22    end=2016-06-30
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/cost/v3    params=${params}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+分页获取充值记录
+    [Tags]    T
+    ${headers}=    Set Headers login
+    ${params}=    Create Dictionary    no=${pageNo}    size=${pageSize}    start=2016-01-22    end=2016-06-30
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/cost/v3/recharge    params=${params}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Dictionary Should Contain Key    ${resp.json()}    code
+    Dictionary Should Contain Value    ${resp.json()}    0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+分页获取收礼记录--主播
+    [Tags]    T
+    ${headers}=    Set Headers login anchor
+    ${params}=    Create Dictionary    no=${pageNo}    size=${pageSize}    start=2016-01-22    end=2016-06-30
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/goods/v3/g/r    params=${params}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+分页获取送礼记录
+    [Tags]    T
+    ${headers}=    Set Headers login
+    ${params}=    Create Dictionary    no=${pageNo}    size=${pageSize}    start=2016-01-22    end=2016-06-30
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/goods/v3/g/s    params=${params}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Dictionary Should Contain Key    ${resp.json()}    code
+    Dictionary Should Contain Value    ${resp.json()}    0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+分页获取收花记录--主播
+    [Tags]    T
+    ${headers}=    Set Headers login anchor
+    ${params}=    Create Dictionary    no=${pageNo}    size=${pageSize}    start=2016-01-22    end=2016-06-30
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/goods/v3/f/r    params=${params}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Dictionary Should Contain Key    ${resp.json()}    code
+    Dictionary Should Contain Value    ${resp.json()}    0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+分页获取送花记录
+    [Tags]    T
+    ${headers}=    Set Headers login
+    ${params}=    Create Dictionary    no=${pageNo}    size=${pageSize}    start=2016-01-22    end=2016-06-30
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/goods/v3/f/s    params=${params}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Dictionary Should Contain Key    ${resp.json()}    code
+    Dictionary Should Contain Value    ${resp.json()}    0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+查看首页json
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /resource/show/data/v3/room/all_room.json
+    Should Be Equal As Strings    ${resp.status_code}    200
+    #Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+查看首页正在直播json
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /resource/show/data/v3/room/live_room.json
+    Should Be Equal As Strings    ${resp.status_code}    200
+    #Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}

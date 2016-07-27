@@ -1,0 +1,99 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          Resources/个人信息keywords.txt
+Resource          Resources/账号.txt
+Resource          Resources/首页.txt
+
+*** Test Cases ***
+修改个人信息_昵称
+    [Tags]    mine
+    [Setup]    Normal User Login
+    sleep    3
+    click Element    ${个人名片}
+    double click element    ${编辑个人信息}
+    Switch Window by url    ${个人信息页}
+    double click element    ${编辑按钮}
+    Input Text    ${输入昵称}    ${修改后的昵称}
+    Find and Click Element    ${确认修改}
+    #    //*[@id="modifyUserInfo"]/p[4]/input[1]
+    [Teardown]    Close Browser
+
+修改个人信息_生日
+    [Tags]    mine
+    [Setup]    Normal User Login
+    click Element    ${个人名片}
+    Double Click Element    ${编辑个人信息}
+    Switch Window by url    ${个人信息页}
+    double click element    ${编辑按钮}
+    click button    ${年}
+    Double Click Element    ${2014}
+    click button    ${月}
+    Double Click Element    ${7月}
+    click button    ${日}
+    Double Click Element    ${22日}
+    Find and Click Element    ${确认修改}
+    [Teardown]    Close Browser
+
+修改个人信息_密码
+    [Tags]    mine
+    [Setup]    Normal User Login
+    click Element    ${个人名片}
+    Double Click Element    ${编辑个人信息}
+    Switch Window by url    ${个人信息页}
+    Input password    ${输入旧密码}    ${密码}
+    Input Text    ${输入新密码}    ${新密码}
+    Input Text    ${再次输入新密码}    ${新密码}
+    Find and Click Element    ${确认修改密码}
+    Normal User 直播间Login    ${SVIP账号}    ${新密码}
+    click element    ${直播间编辑个人信息}
+    Switch Window by url    ${个人信息页}
+    Input password    ${输入旧密码}    ${新密码}
+    Input Text    ${输入新密码}    ${密码}
+    Input Text    ${再次输入新密码}    ${密码}
+    Find and Click Element    ${确认修改密码}
+    [Teardown]    Close All Browsers
+
+修改个人信息_性别？
+    [Tags]
+    [Setup]    Normal User Login
+    sleep    3
+    click Element    ${个人名片}
+    double click element    ${编辑个人信息}
+    Switch Window by url    ${个人信息页}
+    double click element    ${编辑按钮}
+    Select Radio Button    id=loadedGender    value=1
+    Find and Click Element    ${确认修改}
+    [Teardown]    Close Browser
+
+修改个人信息_头像?
+    [Tags]
+    [Setup]    Normal User Login
+    click Element    ${个人名片}
+    double click element    ${编辑个人信息}
+    Switch Window by url    ${个人信息页}
+    #click button    ${编辑头像}
+    Choose File    ${编辑头像}    http:\\static.7najm.com:9999\\resource\\face\\emoji_smile.png
+    click button    //form//input
+    [Teardown]    Close Browser
+
+账户信息_充值记录？
+    [Tags]    mine
+    [Setup]    Normal User Login
+    打开个人信息页面
+    find and click element    menu_myWealth
+    click element    myrechargerecord
+    Switch Window by url    ${充值历史页}
+    #${date}    set variable
+    #Execute Javascript    window.document.getElemetnById("stime").value='2016-06-01'
+    #input text    stime    2016-06-01
+    #input text    etime    2016-07-01
+    click button    checkR
+    [Teardown]    Close Browser
+
+账户信息_我的关注
+    [Tags]    mine
+    [Setup]    Normal User Login
+    打开个人信息页面
+    Click link    id=menu_myfavorite
+    Switch Window by url    ${关注主播列表页}
+    [Teardown]    Close Browser

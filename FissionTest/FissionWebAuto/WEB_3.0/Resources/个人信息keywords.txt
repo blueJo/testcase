@@ -1,0 +1,28 @@
+*** Settings ***
+Resource          账号.txt
+
+*** Variables ***
+${个人名片}           xpath=//p[contains(concat(' ', @class, ' '), ' user_name ')]
+${编辑个人信息}         xpath=//*[@id="top_user_head"]    # id=top_user_head
+${第一个直播间}         xpath=//li[1]//div[1]//span//span[2]
+${编辑头像}           id=file4
+${签到}             id=sign
+${提交登录}           login_btn_submit
+${编辑按钮}           xpath=//a[contains(concat(' ', @class, ' '), ' editBtn ')]    # id=editUserInfo
+${输入昵称}           id=edit_nickname    # 昵称的id
+${修改后的昵称}         blueblueblue000000001
+${确认修改}           //a[contains(concat(' ', @class, ' '), ' saveBtn ')]    # 确认修改个人信息
+${取消}             //a[contains(concat(' ', @class, ' '), ' cancelBtn ')]    # id=cancel
+${年}              id=edit_birthday_year    # 点击年
+${2014}           xpath=//div[contains(concat(' ', @class, ' '), ' num_tab3 ')]//div//a[3]    # 2014年
+${月}              edit_birthday_month
+${7月}             xpath=//div[@id='edit_birthday_month_content']//div//a[7]
+${日}              id=edit_birthday_day
+${22日}            xpath=//div[@id='edit_birthday_day_content']//div//a[22]
+${ID}             xpath=//p[contains(concat(' ', @class, ' '), ' detail_top_id ')]//span    # ID的标签
+${输入旧密码}          id=oldpwd
+${输入新密码}          id=newpwd1
+${再次输入新密码}        id=newpwd2
+${确认修改密码}         id=changePwdBtn
+${MyFollowed}     id=menu_myfavorite
+${新密码}            000000

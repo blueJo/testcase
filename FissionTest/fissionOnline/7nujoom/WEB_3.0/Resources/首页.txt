@@ -1,0 +1,64 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          ../globals/constants.robot
+Resource          ../globals/global_keywords.robot
+Resource          ../globals/global_variables.robot
+Resource          title.txt
+Resource          账号.txt
+Resource          直播间keywords.txt
+Resource          个人信息keywords.txt
+
+*** Variables ***
+${登录}             xpath=//ul[contains(concat(' ', @class, ' '), ' sign_nav ')]//li[2]//a
+${输入账号}           id=login_login_name
+${输入密码}           id=login_password
+${提交登录}           login_btn_submit
+${签到入口}           xpath=//li[@id='sign']//a
+${通知入口}           xpath=//li[contains(concat(' ', @class, ' '), ' header_message ')]//a
+${申请做主播}          xpath=//li[contains(concat(' ', @class, ' '), ' nav_last ')]//a
+${排行榜}            xpath=//ul[contains(concat(' ', @class, ' '), ' menu_nav ')]//li[2]//a
+${首页home}         xpath=//ul[contains(concat(' ', @class, ' '), ' menu_nav ')]//li[1]//a
+${LiveNow}        xpath=//p[contains(concat(' ', @class, ' '), ' bottom_arrow ')]//a
+${直播}             id=top_self_living
+
+*** Keywords ***
+Normal User Login
+    Setup Commands    ${7Nujoom URL}    ${BROWSER}
+    Click Link    ${登录}
+    Input text    ${输入账号}    ${SVIP账号}
+    Input password    ${输入密码}    ${密码}
+    click button    ${提交登录}
+
+Normal User 直播间Login
+    [Arguments]    ${账号}    ${密码}
+    Setup Commands    ${7Nujoom 直播间URL}    ${BROWSER}
+    Double Click Element    ${直播间登录按钮}
+    Input text    ${输入账号}    ${账号}
+    Input password    ${输入密码}    ${密码}
+    click button    ${提交登录}
+    Select Window    ${7nujoom}
+    sleep    5
+
+Normal User Login_主播
+    Setup Commands    ${7Nujoom URL}    gc
+    Click Link    ${登录}
+    Input text    ${输入账号}    ${主播账号}
+    Input password    ${输入密码}    ${主播密码}
+    click button    ${提交登录}
+
+打开个人信息页面
+    sleep    1
+    find and Click Element    ${个人名片}
+    sleep    1
+    Double Click Element    ${编辑个人信息}
+    Switch Window by url    ${个人信息页}
+
+Normal User 直播间Login_火狐
+    [Arguments]    ${账号}    ${密码}
+    Setup Commands    ${7Nujoom 直播间URL}    ff
+    Double Click Element    ${直播间登录按钮}
+    Input text    ${输入账号}    ${账号}
+    Input password    ${输入密码}    ${密码}
+    click button    ${提交登录}
+    Select Window    ${7nujoom}
+    sleep    5

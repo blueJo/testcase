@@ -1,0 +1,40 @@
+*** Settings ***
+Library           Selenium2Library
+
+*** Variables ***
+${直播间登录按钮}        xpath=//p[contains(concat(' ', @class, ' '), ' user_sign ')]//span[1]
+${消息输入框}          message    # 发言框
+${消息显示区}          xpath=//div[contains(concat(' ', @class, ' '), ' chat_area ')]    # 公屏消息显示
+${send}           id=say    # 消息发出按钮
+${消息内容}           hello
+${表情入口}           xpath=//span[@id='emoji']//img    # 输入框边上的笑脸
+${微笑表情}           xpath=//li[contains(concat(' ', @class, ' '), ' smile ')]    # 默认表情第一个
+${解锁表情}           xpath=//*[@id="face"]/ul/li[3]/img    # 解锁表情入口
+${解锁表情hi}         xpath=//li[contains(concat(' ', @class, ' '), ' man_hi ')]    # 第一个解锁表情
+${会员表情入口}         xpath=//li[contains(concat(' ', @class, ' '), ' on ')]//img
+${会员表情money}      xpath=//li[contains(concat(' ', @class, ' '), ' zoo_Money ')]
+${选择的礼物}          xpath=//strong[contains(concat(' ', @class, ' '), ' Flower ')]    # 当前所选择的礼物为 花
+${发送礼物}           id=give    # send
+${礼物展示区}          id=dessert    # 送礼记录展示区
+${VIP礼物入口}        xpath=//ul[@id='tabGoods']//li[2]//a
+${选择VIP礼物}        xpath=//ul[2]//li[5]//div//strong
+${关注}             id=hostFollow
+${分享}             xpath=//*[@id="roomTop"]/div[1]/ul/li[1]
+${fb}             xpath=//li[@id='share_to_facebook']//img
+${tw}             xpath=//li[@id='share_to_twitter']//img
+${送花}             id=fans
+${直播间在线列表}        id=switch_ranking
+${直播间_MyFollowed}    xpath=//ul[contains(concat(' ', @class, ' '), ' room_nav ')]//li[2]//a
+${禁言ban}          xpath=//a[4]
+${移出remove}       xpath=//a[5]
+${直播间在线列表第二名}     xpath=//li[contains(concat(' ', @class, ' '), ' null ')]//span[3]
+${背包礼物入口}         xpath=//ul[@id='tabGoods']//li[3]//a
+${背包礼物}           xpath=//ul[3]//li//div//strong
+${直播间编辑个人信息}      xpath=//*[@id="bar"]/div[1]/div[1]/span/a
+
+*** Keywords ***
+发言
+    sleep    3
+    Input text    ${消息输入框}    ${消息内容}
+    click button    ${send}
+    sleep    3

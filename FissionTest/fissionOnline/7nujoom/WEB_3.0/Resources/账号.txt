@@ -1,0 +1,14 @@
+*** Settings ***
+Library           Selenium2Library
+
+*** Variables ***
+${SVIP账号}         105284116@qq.com
+${SVIP用户ID}       31922
+${密码}             111111
+${普通账号}           blue2@126.com
+${普通账号用户ID}       152045
+${主播账号}           dy@126.com
+${主播密码}           111111
+${主播昵称}           dy
+${修改密码账号}         blue8@126.com
+${普通账户昵称}         hello kitty

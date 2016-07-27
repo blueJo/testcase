@@ -1,0 +1,13 @@
+*** Settings ***
+Library           Selenium2Library
+
+*** Variables ***
+${SVIP账号}         test2@qq.com
+${SVIP用户ID}       488182
+${密码}             111111
+${普通账号}           test5@qq.com
+${普通账号用户ID}       488229
+${主播账号}           Mariellefaress@gmail.com
+${主播密码}           000000
+${主播昵称}           Ruby Noun
+${修改密码账号}         test1@126.com
