@@ -1,0 +1,44 @@
+*** Settings ***
+Library           WebSocketLibrary
+Library           RequestsLibrary
+Resource          Resources/keywords.txt
+
+*** Test Cases ***
+获取商城分类接口
+    [Tags]    T
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/shop/v3/types
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    #Dictionary Should Contain Key    ${resp.json()}    code
+    #Dictionary Should Contain Value    ${resp.json()}    0
+    #Should Contain    ${resp.text}    tpyes
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+依据道具获取商品列表信息？数据空
+    [Tags]    T
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    service/shop/v3/special
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    #Dictionary Should Contain Key    ${resp.json()}    code
+    #Dictionary Should Contain Value    ${resp.json()}    0
+    #Should Contain    ${resp.text}    tpyes
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+根据商品ID获取商品信息
+    [Tags]    T
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    service/shop/v3/info/3
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    #Dictionary Should Contain Key    ${resp.json()}    code
+    #Dictionary Should Contain Value    ${resp.json()}    0
+    #Should Contain    ${resp.text}    tpyes
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}

@@ -152,3 +152,15 @@ Resource          Resources/keywords.txt
     #Should Contain    ${resp.text}    "code":0
     ${jsondata}=    To Json    ${resp.text}    pretty_print=True
     log    ${jsondata}
+
+反馈接口
+    [Tags]    T
+    ${headers}=    Set Headers login
+    ${params}=    Create Dictionary    to=${主播uid}    msg=啦啦啦啦    relation=599999999    countryName=
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/report/v3/${roomId}/3    params=${params}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Dictionary Should Contain Key    ${resp.json()}    code
+    Dictionary Should Contain Value    ${resp.json()}    0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}

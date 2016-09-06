@@ -1,0 +1,27 @@
+*** Settings ***
+Library           RequestsLibrary
+Resource          keywords.txt
+
+*** Test Cases ***
+01 邮箱登录
+    Create Session    7nujooom    ${URL}
+    ${params}=    Create Dictionary    requestType=1    fromType=1    loginName=${用户名}    password=${密码}
+    ${resp}=    Get Request    7nujooom    /user_login.fly    params=${params}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+
+02 关注主播
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Post Request    7nujooom    /room_addFavorite.fly    roomId=98
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    log    ${resp.text}
+
+03 获取用户信息
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Post Request    7nujooom    /user_getSelfUserInfo.fly
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    log    ${resp.text}

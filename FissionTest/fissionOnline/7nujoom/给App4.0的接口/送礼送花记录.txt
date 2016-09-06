@@ -1,0 +1,29 @@
+*** Settings ***
+Library           RequestsLibrary
+Resource          Resources/keywords.txt
+Library           WebSocketLibrary
+
+*** Test Cases ***
+分页获取送星币记录
+    [Tags]    T
+    ${headers}=    Set Headers login content
+    ${params}=    Create Dictionary    no=${pageNo}    size=${pageSize}    start=2016-08-24    end=2016-08-24
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/goods/v3/fg/s    params=${params}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Dictionary Should Contain Key    ${resp.json()}    code
+    Dictionary Should Contain Value    ${resp.json()}    0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+分页获取收星币记录--主播
+    [Tags]    T
+    ${headers}=    Set Headers login anchor
+    ${params}=    Create Dictionary    no=${pageNo}    size=${pageSize}    start=2016-08-22    end=2016-08-22
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    service/goods/v3/fg/r    params=${params}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Dictionary Should Contain Key    ${resp.json()}    code
+    Dictionary Should Contain Value    ${resp.json()}    0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}

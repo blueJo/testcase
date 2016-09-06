@@ -4,6 +4,14 @@ Library           RequestsLibrary
 Resource          Resources/keywords.txt
 
 *** Test Cases ***
+关注
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Post Request    7nujooom    /room_addFavorite.fly
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    log    ${resp.text}
+
 04 签到
     [Tags]    T
     ${headers}=    Set Headers login

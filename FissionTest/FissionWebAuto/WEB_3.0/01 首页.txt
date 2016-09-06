@@ -19,7 +19,7 @@ Resource          Resources/首页.txt
     sleep    3
     click element    ${个人名片}
     Element should contain    ${ID}    ${普通账号用户ID}
-    [Teardown]    Close Browser
+    [Teardown]
 
 签到？？
     [Setup]    Normal User Login

@@ -58,18 +58,15 @@ Resource          Resources/keywords.txt
     ${jsondata}=    To Json    ${resp.text}    pretty_print=True
     log    ${jsondata}
 
-获取房间消息请求500
+获取房间消息请求
     [Tags]    T
     [Timeout]
     ${headers}=    Set Headers login
-    #${json_data}    Dumps    cmd:28,num:1    #{"cmd":30,"type":1,"state":true}    {"cmd":28,"num":1}    {cmd:30,type:1,state:true}
-    #${ss}=    Encode String To Bytes    {"cmd":30,"type":1,"state":true}    utf-8
-    #log    ${ss}
-    ${data}    Create Dictionary    data={"cmd":30,"type":1,"state":true}
-    ${params}=    Encode String To Bytes    ${data}    utf-8
-    log    ${ss}
+    ${ss}=    Encode String To Bytes    {"cmd":30,"type":1,"state":true}    utf-8
+    ${data}    Create Dictionary    data=${ss}
+    #${json_data}    Dumps    ${data}
     Create Session    7nujooom    ${URL}    headers=${headers}
-    ${resp}=    Post Request    7nujooom    /service/room/v3/135/send    data=${params}
+    ${resp}=    Post Request    7nujooom    /service/room/v3/135/send    data=${data}
     Should Be Equal As Strings    ${resp.status_code}    200
     Should Contain    ${resp.text}    "code":0
     ${jsondata}=    To Json    ${resp.text}    pretty_print=True

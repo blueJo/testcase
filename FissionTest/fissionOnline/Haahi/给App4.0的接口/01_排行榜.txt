@@ -1,0 +1,166 @@
+*** Settings ***
+Library           RequestsLibrary
+Resource          resources/keywords.txt
+Library           WebSocketLibrary
+
+*** Test Cases ***
+获取房间用户列表
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    service/room/v3/users/${roomId}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+获取房间排行榜?
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login
+    ${data}    Create Dictionary    ft    gw
+    Create Session    7nujooom    ${URL}    headers=${headers}    data=${data}
+    ${resp}=    Get Request    7nujooom    service/room/v3/ranks/${roomId}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    #${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    #log    ${jsondata}
+
+获取房间7日排行榜
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    service/room/v3/rank/week/${roomId}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+获取房间今日排行榜
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/room/v3/rank/day/${roomId}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+获取房间信息
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    /service/room/v3/info/${surfing靓号}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+    #Should Be Equal As Strings    ${resp.status_code}    200
+    Dictionary Should Contain Key    ${resp.json()}    dataInfo
+    #Dictionary Should Contain Key    ${resp.json()}    tf
+
+获取房间消息请求--没有写全所有的cmd
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login content
+    ${ss}=    Encode String To Bytes    {"cmd":30,"type":1,"state":true}    utf-8
+    ${data}    Create Dictionary    data=${ss}
+    #${json_data}    Dumps    ${data}
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Post Request    7nujooom    /service/room/v3/${roomId}/send    data=${data}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+房间收藏请求
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login content
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Post Request    7nujooom    service/room/v3/fav/add/${roomId}    #data=${data}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+取消房间收藏请求--没有该接口
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login content
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Post Request    7nujooom    service/room/v3/fav/sub/${roomId}    #data=${data}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+批量添加收藏请求
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login content
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Post Request    7nujooom    service/room/v3/user/fav/adds    ids=56
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+批量取消收藏请求
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login content
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Post Request    7nujooom    service/room/v3/user/fav/subs    ids=56
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+获取房间消息请求cmd34?
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login content
+    Connect    ws://10.10.150.134:1990
+    ${sc}=    Encode String To Bytes    {commandId: 18}    utf-8
+    send    ${sc}
+    ${l}    Recv Data
+    ${ss}=    Encode String To Bytes    {"cmd":35,"num":1}    utf-8
+    ${data}    Create Dictionary    data=${ss}
+    #${json_data}    Dumps    ${data}
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Post Request    7nujooom    /service/room/v3/${roomId}/send    data=${data}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+获取房间用户列表_管理员列表?
+    [Tags]    T
+    [Timeout]
+    ${headers}=    Set Headers login
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Get Request    7nujooom    service/room/v3/users/admin/${roomId}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}
+
+获取房间消息请求cmd34
+    [Tags]    T
+    [Timeout]
+    ${headers}=    header
+    #${headers}=    Set Headers login content
+    ${ss}=    Encode String To Bytes    {"cmd":35,"num":1}    utf-8
+    ${data}    Create Dictionary    data=${ss}
+    #${json_data}    Dumps    ${data}
+    Create Session    7nujooom    ${URL}    headers=${headers}
+    ${resp}=    Post Request    7nujooom    /service/room/v3/${roomId}/send    data=${data}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    Should Contain    ${resp.text}    "code":0
+    ${jsondata}=    To Json    ${resp.text}    pretty_print=True
+    log    ${jsondata}

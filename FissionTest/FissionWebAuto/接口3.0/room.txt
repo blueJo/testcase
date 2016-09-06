@@ -1,0 +1,52 @@
+*** Settings ***
+Library           WebSocketLibrary
+Library           RequestsLibrary
+Resource          Resources/keywords.txt
+Library           BuiltIn
+
+*** Test Cases ***
+直播间发言
+    Connect    ws://10.10.151.87:1990
+    ${ss}=    Encode String To Bytes    {"commandId":1,"roomId":166,"loginKey":"0"}    utf-8
+    send    ${ss}
+    ${l}    Recv Data
+    #Repeat Keyword    1 minutes    Recv
+    #: FOR    IN    10
+
+hhh
+    Connect    ws://10.10.150.134:1990
+    ${ss}=    Encode String To Bytes    {"commandId":1,"roomId":488179,"loginKey":"0"}    utf-8
+    send    ${ss}
+    ${l}    Recv Data
+    log    ${l}
+    Repeat Keyword    1 minutes    Recv Data
+    #: FOR    IN    10
+
+直播间连接
+    Connect    ws://10.10.151.87:1990
+    ${ss}=    Encode String To Bytes    {"commandId":1,"roomId":488179,"loginKey":"0"}    utf-8
+    send    ${ss}
+    ${l}    Recv Data
+    ${recv}=    Recv Data
+    Repeat Keyword    2 minutes    sendMessage
+    #${r}=    Get Substring    ${recv}    4    20
+    ##${recv}=    Repeat Keyword    1 times    Recv
+    #${rc}    Encode String To Bytes    ${r}    utf-8
+    #send    ${rc}
+    #${rec}=    Recv
+    #${jsondata}=    To Json    ${recv.content[4:-2]}    pretty_print=True
+    #${commandId}    Get From Dictionary    ${jsondata}    commandId
+    #Run Keyword If    ${commandId}=="18"    send    ${recv}
+    #: FOR    IN    10
+
+*** Keywords ***
+sendMessage
+    ${ssl}=    Encode String To Bytes    {commandId: 18}    utf-8
+    send    ${ssl}
+    ${sl}    Recv Data
+    #log    ${l}
+    #send    ${l}
+
+Recv
+    ${l}    Recv Data
+    log    ${l}
